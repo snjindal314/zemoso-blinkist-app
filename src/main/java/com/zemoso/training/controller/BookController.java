@@ -15,10 +15,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-
-//TODO Response From controller: Data/Status/TimeStamp
-
-//TODO Rest ExceptionHandler
 @RestController
 @RequestMapping("/api/v1/book-service")
 public class BookController {

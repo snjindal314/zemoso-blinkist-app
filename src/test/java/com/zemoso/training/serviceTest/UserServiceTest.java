@@ -96,7 +96,7 @@ class UserServiceTest {
 
     @Test
     void updateUserExceptionTest(){
-        User newUser = userData("test6", "test112345", true, "test5", 987654346L, "test5@gmail.com", true);
+        User newUser = userData("test6", "test112345", true, "test6", 987654126L, "test6@gmail.com", true);
         userService.createNewUser(newUser);
 
         newUser = userService.findUserByUserName(newUser.getUsername());

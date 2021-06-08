@@ -4,6 +4,8 @@ import com.zemoso.training.dto.BookDto;
 import com.zemoso.training.dto.UserDto;
 import com.zemoso.training.entity.Book;
 import com.zemoso.training.entity.User;
+import com.zemoso.training.exception.ResourceNotFoundException;
+import com.zemoso.training.exception.ValidationException;
 import com.zemoso.training.service.UserService;
 import com.zemoso.training.service.UserServiceImpl;
 import org.modelmapper.ModelMapper;
@@ -30,22 +32,29 @@ public class UserController {
     }
 
     @PutMapping("/users")
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) throws ValidationException {
         User user = modelMapper.map(userDto, User.class);
         User updatedUser = userService.updateUser(user);
-        return new ResponseEntity<UserDto>(modelMapper.map(updatedUser, UserDto.class), HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(updatedUser, UserDto.class), HttpStatus.OK);
     }
     
     @GetMapping("/users/{username}")
-    public ResponseEntity<User> findUserByUsername(@PathVariable String username){
+    public ResponseEntity<UserDto> findUserByUsername(@PathVariable String username){
         User user = userService.findUserByUserName(username);
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        if(user == null){
+            throw new ResourceNotFoundException("User " + username + " not found.");
+        }
+        return new ResponseEntity<>(modelMapper.map(user, UserDto.class), HttpStatus.OK);
     }
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(){
         List<User> users = userService.getAllUsers();
+
+        if(users.size() == 0){
+            throw new ResourceNotFoundException("No users found.");
+        }
 
         return new ResponseEntity<>(users, HttpStatus.OK);
     }

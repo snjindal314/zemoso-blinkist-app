@@ -46,4 +46,6 @@ public class AppController {
         return new ResponseEntity<>("User is logged out successfully.", HttpStatus.OK);
     }
 
+
+
 }

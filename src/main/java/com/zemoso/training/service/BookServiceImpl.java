@@ -37,13 +37,8 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public Book getBookByBookCategoryId(UUID categoryId) {
-        return null;
-    }
-
-    @Override
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    public List<Book> getBooksByCategory(UUID categoryId) {
+        return bookRepository.findAllBooksByCategory(categoryId);
     }
 
     @Override
@@ -76,5 +71,15 @@ public class BookServiceImpl implements BookService{
     @Override
     public void deleteBlinksByBookId(UUID bookId) {
         blinkRepository.deleteAllBlinksByBookId(bookId);
+    }
+
+    @Override
+    public List<Book> getPopularBooks(int popularBooks) {
+        return bookRepository.findPopularBooks(popularBooks);
+    }
+
+    @Override
+    public List<Book> getRecentlyAddedBooks(int recentBooks) {
+        return bookRepository.findRecentlyAddedBooks(recentBooks);
     }
 }

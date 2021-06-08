@@ -4,14 +4,17 @@ import com.zemoso.training.dto.BlinkDto;
 import com.zemoso.training.dto.BookDto;
 import com.zemoso.training.entity.Blink;
 import com.zemoso.training.entity.Book;
+import com.zemoso.training.exception.ValidationException;
 import com.zemoso.training.service.BookService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -20,6 +23,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/book-service")
 public class BookController {
 
+    @Value("${book.recentBooksDay}")
+    private Integer recentlyAddedBooksDays;
+
+    @Value("${book.popularNumberOfReads}")
+    private Integer popularBooks;
 
     private final BookService bookService;
     private final ModelMapper modelMapper;
@@ -38,8 +46,19 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public ResponseEntity<List<BookDto>> getAllBooks(){
-        List<Book> books = bookService.getAllBooks();
+    public ResponseEntity<List<BookDto>> getAllBooks(@RequestParam Map<String, String> params){
+        List<Book> books;
+        if(params.get("fetchPopularBooks") != null && Boolean.parseBoolean(params.get("fetchPopularBooks"))){
+            books = bookService.getPopularBooks(popularBooks);
+        }
+        else if(params.get("fetchRecentlyAddedBooks") != null && Boolean.parseBoolean(params.get("fetchRecentlyAddedBooks"))){
+            books = bookService.getRecentlyAddedBooks(recentlyAddedBooksDays);
+        }
+        else if(params.get("fetchBooksByCategory") != null){
+            books = bookService.getBooksByCategory(UUID.fromString(params.get("fetchBooksByCategory")));
+        }
+        else
+            throw new ValidationException("Please select type of books.");
         return new ResponseEntity<>(books.stream().map(book -> modelMapper.map(book, BookDto.class)).collect(Collectors.toList()), HttpStatus.OK);
     }
 

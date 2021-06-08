@@ -27,8 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic()                      // it indicate basic authentication is requires
                 .and()
                 .authorizeRequests()
+                .antMatchers("/api/v1/registration", "/api/v1/login", "/api/v1/book-service/books").permitAll()
                 .antMatchers("/api/v1/user-service/users").hasRole("ADMIN")
-                .antMatchers( "/**").permitAll()
+//                .antMatchers( "/**").permitAll()
                 .anyRequest().authenticated();
 
         http.csrf().disable();

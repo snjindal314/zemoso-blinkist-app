@@ -13,7 +13,7 @@ public class UserDetailsImpl implements UserDetails {
 
         private static final long serialVersionUID = 1L;
 
-        String ROLE_PREFIX = "ROLE_";
+        private String rolePrefix = "ROLE_";
 
         private String username;
         private String password;
@@ -40,9 +40,9 @@ public class UserDetailsImpl implements UserDetails {
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-            List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
+            List<GrantedAuthority> list = new ArrayList<>();
 
-            list.add(new SimpleGrantedAuthority(ROLE_PREFIX + role));
+            list.add(new SimpleGrantedAuthority(rolePrefix + role));
 
             return list;
         }
@@ -78,11 +78,35 @@ public class UserDetailsImpl implements UserDetails {
             return isActive;
         }
 
-    public String getRole() {
-        return role;
+        public String getRole() {
+            return role;
+        }
+
+        public void setRole(String role) {
+            this.role = role;
+        }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

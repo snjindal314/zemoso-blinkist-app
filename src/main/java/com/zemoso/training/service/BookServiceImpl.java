@@ -7,6 +7,7 @@ import com.zemoso.training.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,18 +26,18 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public UUID saveBook(Book book) {
-        Book addedBook = bookRepository.save(book);
+        var addedBook = bookRepository.save(book);
         return addedBook.getBookId();
     }
 
     @Override
     public UUID updateBook(Book book) {
-        Book updatedBook = bookRepository.save(book);
+        var updatedBook = bookRepository.save(book);
         return updatedBook.getBookId();
     }
 
     @Override
-    public Book getBookByBookCategoryId(UUID CategoryId) {
+    public Book getBookByBookCategoryId(UUID categoryId) {
         return null;
     }
 
@@ -47,7 +48,7 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public List<Blink> getBlinksByBookId(UUID bookId) {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override

@@ -28,7 +28,7 @@ public class AppController {
 
     @PostMapping("/registration")
     public ResponseEntity<String> registerUser(@RequestBody UserDto userDto){
-        User user = modelMapper.map(userDto, User.class);
+        var user = modelMapper.map(userDto, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.createNewUser(user);
         return new ResponseEntity<>("User is created successfully.", HttpStatus.CREATED);

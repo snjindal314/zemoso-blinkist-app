@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/book-service")
@@ -31,22 +32,22 @@ public class BookController {
 
     @PostMapping("/books")
     public ResponseEntity<String> addNewBook(@RequestBody BookDto bookDto){
-        Book book = modelMapper.map(bookDto, Book.class);
+        var book = modelMapper.map(bookDto, Book.class);
         UUID bookId = bookService.saveBook(book);
-        return new ResponseEntity(bookId, HttpStatus.OK);
+        return new ResponseEntity<>("New book has been added. Book Id: " +bookId, HttpStatus.OK);
     }
 
     @GetMapping("/books")
-    public List<Book> getAllBooks(){
+    public ResponseEntity<List<BookDto>> getAllBooks(){
         List<Book> books = bookService.getAllBooks();
-        return books;
+        return new ResponseEntity<>(books.stream().map(book -> modelMapper.map(book, BookDto.class)).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @PutMapping("/books")
     public ResponseEntity<String> updateBook(@RequestBody BookDto bookDto){
-        Book book = modelMapper.map(bookDto, Book.class);
+        var book = modelMapper.map(bookDto, Book.class);
         UUID bookId = bookService.updateBook(book);
-        return new ResponseEntity(bookId, HttpStatus.OK);
+        return new ResponseEntity<>("Book has been updated. Book Id: " +bookId, HttpStatus.OK);
     }
 
     @DeleteMapping("/books/{book-id}")
@@ -56,18 +57,18 @@ public class BookController {
     }
 
     @GetMapping("/books/{book-id}")
-    public ResponseEntity<Book> getBookByBookId(@PathVariable UUID bookId){
+    public ResponseEntity<BookDto> getBookByBookId(@PathVariable UUID bookId){
         Optional<Book> book = bookService.getBookByBookId(bookId);
-        return new ResponseEntity(book, HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(book, BookDto.class), HttpStatus.OK);
 
     }
 
     @PostMapping("/books/{book-id}/blinks")
-    public ResponseEntity addBlinksByBooksId(@PathVariable(value = "book-id") UUID bookId, @RequestBody BlinkDto blinkDto){
-        Blink blink = modelMapper.map(blinkDto, Blink.class);
+    public ResponseEntity<String> addBlinksByBooksId(@PathVariable(value = "book-id") UUID bookId, @RequestBody BlinkDto blinkDto){
+        var blink = modelMapper.map(blinkDto, Blink.class);
         blink.setBookId(bookId);
         UUID blinkId = bookService.addBlinkByBookId(bookId, blink);
-        return new ResponseEntity(blinkId, HttpStatus.OK);
+        return new ResponseEntity<>("New blink has been added. Blink Id: " + blinkId, HttpStatus.OK);
     }
 
     @GetMapping("/books/{book-id}/blinks")
@@ -76,8 +77,8 @@ public class BookController {
     }
 
     @DeleteMapping("/books/{book-id}/blinks")
-    public ResponseEntity deleteBlinksByBookId(@PathVariable(value = "book-id") UUID bookId){
+    public ResponseEntity<String> deleteBlinksByBookId(@PathVariable(value = "book-id") UUID bookId){
         bookService.deleteBlinksByBookId(bookId);
-        return new ResponseEntity("All blinks have been deleted.", HttpStatus.OK);
+        return new ResponseEntity<>("All blinks have been deleted.", HttpStatus.OK);
     }
 }

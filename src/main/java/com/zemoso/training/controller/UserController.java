@@ -33,14 +33,14 @@ public class UserController {
 
     @PutMapping("/users")
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) throws ValidationException {
-        User user = modelMapper.map(userDto, User.class);
-        User updatedUser = userService.updateUser(user);
+        var user = modelMapper.map(userDto, User.class);
+        var updatedUser = userService.updateUser(user);
         return new ResponseEntity<>(modelMapper.map(updatedUser, UserDto.class), HttpStatus.OK);
     }
     
     @GetMapping("/users/{username}")
     public ResponseEntity<UserDto> findUserByUsername(@PathVariable String username){
-        User user = userService.findUserByUserName(username);
+        var user = userService.findUserByUserName(username);
 
         if(user == null){
             throw new ResourceNotFoundException("User " + username + " not found.");
@@ -52,7 +52,7 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUsers(){
         List<User> users = userService.getAllUsers();
 
-        if(users.size() == 0){
+        if(users.isEmpty()){
             throw new ResourceNotFoundException("No users found.");
         }
 
@@ -61,7 +61,7 @@ public class UserController {
 
     @PostMapping("/users/{user-id}/user-libraries")
     public ResponseEntity<String> addNewBookToUserLibrary(@PathVariable UUID userId, @RequestBody BookDto bookDto){
-        Book book = modelMapper.map(bookDto, Book.class);
+        var book = modelMapper.map(bookDto, Book.class);
 
         return null;
     }

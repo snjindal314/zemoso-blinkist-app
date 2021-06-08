@@ -13,7 +13,7 @@ import java.util.UUID;
 
      UUID updateBook(Book book);
 
-     Book getBookByBookCategoryId(UUID CategoryId);
+     Book getBookByBookCategoryId(UUID categoryId);
 
      List<Book> getAllBooks();
 

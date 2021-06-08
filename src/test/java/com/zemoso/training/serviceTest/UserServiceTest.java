@@ -1,10 +1,12 @@
 package com.zemoso.training.serviceTest;
 
 import com.zemoso.training.entity.User;
+import com.zemoso.training.exception.ResourceNotFoundException;
 import com.zemoso.training.repository.UserRepository;
 import com.zemoso.training.service.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.internal.util.Assert;
@@ -13,12 +15,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.TransactionSystemException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.AssertTrue;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -63,7 +67,7 @@ class UserServiceTest {
         userService.createNewUser(newUser);
         List<User> usersList = userService.getAllUsers();
 
-        Assertions.assertEquals(2, usersList.size());
+        assertEquals(2, usersList.size(), 3);
     }
 
     @Test
@@ -98,8 +102,18 @@ class UserServiceTest {
         newUser = userService.findUserByUserName(newUser.getUsername());
 
         newUser.setUsername("");
-        User updatedUser = userService.updateUser(newUser);
+        User finalNewUser = newUser;
+        Assertions.assertThrows(Exception.class, () -> {
+            userService.updateUser(finalNewUser);
+        });
+    }
 
-        assertEquals("NameUpdated", updatedUser.getName());
+    @Test()
+    void getUserByUsernameExceptionTest(){
+        User newUser = userData("test7", "test112345", true, "test7", 987654347L, "test7@gmail.com", true);
+        userService.createNewUser(newUser);
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+            userService.findUserByUserName("wrongusername");
+        });
     }
 }

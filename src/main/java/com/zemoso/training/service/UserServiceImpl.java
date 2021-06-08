@@ -51,19 +51,7 @@ public class UserServiceImpl implements UserService {
         user1.setEmail(user.getEmail());
         user1.setName(user.getName());
         user1.setUsername(user.getUsername());
+
         return userRepository.save(user1);
     }
-
-/*
-    @Override
-    public List<Highlight> findAllUserHighlights(UUID userId) {
-        return highlightRepository.findAllByUserId(userId);
-    }
-    @Override
-    public Highlight createHighlightByUserId(UUID userId, Highlight highlight) {
-        return highlightRepository.save(highlight);
-    }
-*/
-
-
 }

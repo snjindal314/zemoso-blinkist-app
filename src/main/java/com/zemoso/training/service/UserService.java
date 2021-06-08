@@ -1,6 +1,7 @@
 package com.zemoso.training.service;
 
 import com.zemoso.training.entity.User;
+import com.zemoso.training.exception.ValidationException;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface UserService {
     public User findUserByUserName(String username);
 
     //Method to update an user.
-    public User updateUser(User user);
+    public User updateUser(User user) throws ValidationException;
 
 //    //Method to find all user highlights
 //    public List<Highlight> findAllUserHighlights(UUID userId);

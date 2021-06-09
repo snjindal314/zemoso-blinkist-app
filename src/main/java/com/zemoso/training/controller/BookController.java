@@ -4,6 +4,7 @@ import com.zemoso.training.dto.BlinkDto;
 import com.zemoso.training.dto.BookDto;
 import com.zemoso.training.entity.Blink;
 import com.zemoso.training.entity.Book;
+import com.zemoso.training.entity.Category;
 import com.zemoso.training.exception.ValidationException;
 import com.zemoso.training.service.BookService;
 import org.modelmapper.ModelMapper;
@@ -41,6 +42,11 @@ public class BookController {
     @PostMapping("/books")
     public ResponseEntity<String> addNewBook(@RequestBody BookDto bookDto){
         var book = modelMapper.map(bookDto, Book.class);
+        var category = modelMapper.map(bookDto.getCategoryDto(), Category.class);
+        book.setCategory(category);
+        book.getCategory().setCategoryId(bookDto.getCategoryDto().getCategoryId());
+        book.getLanguage().setLanguageId(bookDto.getLanguageDto().getLanguageId());
+//        book.getBlinkList().stream().forEach((blink) -> blink.setBook(bookDto.));
         UUID bookId = bookService.saveBook(book);
         return new ResponseEntity<>("New book has been added. Book Id: " +bookId, HttpStatus.OK);
     }
@@ -54,8 +60,8 @@ public class BookController {
         else if(params.get("fetchRecentlyAddedBooks") != null && Boolean.parseBoolean(params.get("fetchRecentlyAddedBooks"))){
             books = bookService.getRecentlyAddedBooks(recentlyAddedBooksDays);
         }
-        else if(params.get("fetchBooksByCategory") != null){
-            books = bookService.getBooksByCategory(UUID.fromString(params.get("fetchBooksByCategory")));
+        else if(params.get("fetchBooksByCategoryId") != null){
+            books = bookService.getBooksByCategory(UUID.fromString(params.get("fetchBooksByCategoryId")));
         }
         else
             throw new ValidationException("Please select type of books.");
@@ -76,28 +82,28 @@ public class BookController {
     }
 
     @GetMapping("/books/{book-id}")
-    public ResponseEntity<BookDto> getBookByBookId(@PathVariable UUID bookId){
+    public ResponseEntity<BookDto> getBookByBookId(@PathVariable("book-id") UUID bookId){
         Optional<Book> book = bookService.getBookByBookId(bookId);
-        return new ResponseEntity<>(modelMapper.map(book, BookDto.class), HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(book.get(), BookDto.class), HttpStatus.OK);
 
     }
 
     @PostMapping("/books/{book-id}/blinks")
     public ResponseEntity<String> addBlinksByBooksId(@PathVariable(value = "book-id") UUID bookId, @RequestBody BlinkDto blinkDto){
         var blink = modelMapper.map(blinkDto, Blink.class);
-        blink.setBookId(bookId);
+//        blink.setBookId(bookId);
         UUID blinkId = bookService.addBlinkByBookId(bookId, blink);
         return new ResponseEntity<>("New blink has been added. Blink Id: " + blinkId, HttpStatus.OK);
     }
 
-    @GetMapping("/books/{book-id}/blinks")
-    public List<Blink> findAllBlinksByBookId(@PathVariable(value = "book-id") UUID bookId){
-        return bookService.getAllBlinksByBookId(bookId);
-    }
-
-    @DeleteMapping("/books/{book-id}/blinks")
-    public ResponseEntity<String> deleteBlinksByBookId(@PathVariable(value = "book-id") UUID bookId){
-        bookService.deleteBlinksByBookId(bookId);
-        return new ResponseEntity<>("All blinks have been deleted.", HttpStatus.OK);
-    }
+//    @GetMapping("/books/{book-id}/blinks")
+//    public List<Blink> findAllBlinksByBookId(@PathVariable(value = "book-id") UUID bookId){
+//        return bookService.getAllBlinksByBookId(bookId);
+//    }
+//
+//    @DeleteMapping("/books/{book-id}/blinks")
+//    public ResponseEntity<String> deleteBlinksByBookId(@PathVariable(value = "book-id") UUID bookId){
+//        bookService.deleteBlinksByBookId(bookId);
+//        return new ResponseEntity<>("All blinks have been deleted.", HttpStatus.OK);
+//    }
 }

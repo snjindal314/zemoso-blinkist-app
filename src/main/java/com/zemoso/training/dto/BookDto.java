@@ -5,12 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.UUID;
 
 
 @Getter
 @Setter
-//TODO Try to merge multiple DTOs.
 public class BookDto {
 
     private UUID bookId;
@@ -24,5 +24,9 @@ public class BookDto {
     private UUID categoryId;
     private int numberOfReads;
     private int totalReadTime;
+
+    private List<BlinkDto> blinkDtoList;
+    private CategoryDto categoryDto;
+    private LanguageDto languageDto;
 
 }

@@ -1,11 +1,9 @@
 package com.zemoso.training.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -30,9 +28,8 @@ public class User {
     @Column(name = "email", unique = true)
     private String email;
 
-    @JsonIgnore
+//    @JsonIgnore
     @NotBlank(message = "Password can not be empty.")
-    @Length(min = 8, max = 15, message = "Password length should be 8-12 characters.")
     private String password;
 
     @Column(name = "username", nullable = false, unique = true)

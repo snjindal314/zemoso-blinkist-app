@@ -10,7 +10,7 @@ import java.util.UUID;
 public class BlinkDto {
     private UUID blinkId;
     private String blinkTitle;
-    private UUID bookId;
     private int blinkNumber;
     private String blinkText;
+    private BookDto bookDto;
 }

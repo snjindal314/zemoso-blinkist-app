@@ -40,12 +40,6 @@ public class Book {
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
-//    @Column(name = "language_id", nullable = false)
-//    private UUID languageId;
-//
-//    @Column(name = "category_id", nullable = false)
-//    private UUID categoryId;
-
     @Column(name = "number_of_reads", nullable = false)
     private int numberOfReads;
 

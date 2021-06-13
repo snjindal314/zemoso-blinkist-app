@@ -33,9 +33,4 @@ public class Blink {
     @JoinColumn(name = "book_id", referencedColumnName = "book_id", nullable = false)
     private Book book;
 
-//    @ManyToOne
-//    @JoinColumn(name = "book_id", referencedColumnName = "book_id", nullable = false)
-////    @Column(name = "book_id", nullable = false)
-//    private UUID bookId;
-
 }

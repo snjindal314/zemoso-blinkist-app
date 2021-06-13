@@ -69,13 +69,13 @@ public class UserController {
     public ResponseEntity<String> addNewBookToUserLibrary(@PathVariable(name = "user-id") UUID userId, @RequestBody UserLibraryDto userLibraryDto){
         var userLibrary = new UserLibrary();
 
-        User user = new User();
-        Book book = new Book();
+        var user = new User();
+        var book = new Book();
 
         user.setUserId(userLibraryDto.getUserId());
         book.setBookId(userLibraryDto.getBookId());
 
-        UserLibraryId userLibraryId = new UserLibraryId();
+        var userLibraryId = new UserLibraryId();
         userLibraryId.setUser(user);
         userLibraryId.setBook(book);
 

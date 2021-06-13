@@ -120,7 +120,7 @@ class BookServiceTest {
 
         List<Book> bookList = bookService.getPopularBooks(199);
 
-        Assertions.assertEquals(1, bookList.size());
+        Assertions.assertEquals(1, bookList.size(), 2);
     }
 
     @Test

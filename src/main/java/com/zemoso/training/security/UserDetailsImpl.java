@@ -94,10 +94,6 @@ public class UserDetailsImpl implements UserDetails {
         this.password = password;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
     public void setActive(boolean active) {
         isActive = active;
     }

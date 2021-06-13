@@ -1,6 +1,5 @@
 package com.zemoso.training.serviceTest;
 
-import com.zemoso.training.entity.Blink;
 import com.zemoso.training.entity.Book;
 import com.zemoso.training.entity.Category;
 import com.zemoso.training.entity.Language;
@@ -13,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -30,28 +27,13 @@ class BookServiceTest {
 
     CreateTestData createTestData = new CreateTestData();
 
-    public Book createNewBook(){
-
-        Category category = libraryService.addNewCategory(createTestData.createNewCategory());
-        Language language = libraryService.addNewLanguage(createTestData.addNewLanguage());
-
-        var book = new Book();
-
-        book.setCategory(category);
-        book.setLanguage(language);
-        book.setBookTitle("Test Book");
-        book.setActive(true);
-        book.setAuthor("Test Author");
-        book.setNumberOfReads(0);
-        book.setTotalReadTime(14);
-
-        return book;
-    }
-
     @Test
     void saveBookTest() {
+        Category category = libraryService.addNewCategory(createTestData.createNewCategory("test category", "This is a test category"));
+        Language language = libraryService.addNewLanguage(createTestData.addNewLanguage("us-en", "us English", true));
 
-        Book book = createNewBook();
+
+        Book book = createTestData.createNewBook(category, language, "Space book", true, "Elon Musk", 200, 10);
         var addedBook = bookService.saveBook(book);
 
         Assertions.assertNotNull(addedBook);
@@ -60,7 +42,11 @@ class BookServiceTest {
 
     @Test
     void updateBookTest() {
-        Book book = createNewBook();
+
+        Category category = libraryService.addNewCategory(createTestData.createNewCategory("test category new", "This is a new test category"));
+        Language language = libraryService.addNewLanguage(createTestData.addNewLanguage("uk-en", "UK English", true));
+
+        Book book = createTestData.createNewBook(category, language, "Science book", true, "Newton", 200, 10);
 
         var addedBook = bookService.saveBook(book);
 
@@ -78,50 +64,86 @@ class BookServiceTest {
     }
 
     @Test
-    public List<Book> getBooksByCategory(UUID categoryId) {
-//        return bookRepository.findAllBooksByCategory(categoryId);
-        return null;
+    void getBooksByCategory() {
+        Category category = libraryService.addNewCategory(createTestData.createNewCategory("Science", "This is a science category"));
+        Language language = libraryService.addNewLanguage(createTestData.addNewLanguage("us-en", "us English", true));
+
+
+        var book = createTestData.createNewBook(category, language, "Space book", true, "Elon Musk", 200, 10);
+        var addedBook = bookService.saveBook(book);
+
+        category = libraryService.addNewCategory(createTestData.createNewCategory("space", "This is a space category"));
+
+        book = createTestData.createNewBook(category, language, "science book", true, "Einstein", 200, 10);
+        bookService.saveBook(book);
+
+        List<Book> bookList = bookService.getBooksByCategory(category.getCategoryId());
+
+        Assertions.assertEquals(1, bookList.size());
+        Assertions.assertEquals(category.getCategoryId(), bookList.get(0).getCategory().getCategoryId());
     }
 
     @Test
-    public List<Blink> getBlinksByBookId(UUID bookId) {
-        return new ArrayList<>();
+    void addBlinkByBookIdTest(){
+
     }
 
-//    @Test
-//    public UUID addBlinkByBookId(UUID bookId, Blink blink) {
-//        Blink blink1 = blinkRepository.save(blink);
-//        return blink1.getBlinkId();
-//    }
-//
-////    @Override
-////    public List<Blink> getAllBlinksByBookId(UUID bookId) {
-////        //TODO : find blinks by bookId
-////        return blinkRepository.findAllBlinksByBooksId(bookId);
-////    }
-//
-//    @Test
-//    public Optional<Book> getBookByBookId(UUID bookId) {
-//        return bookRepository.findById(bookId);
-//    }
-//
-//    @Test
-//    public void deleteBookByBookId(UUID bookId) {
-//        bookRepository.deleteById(bookId);
-//    }
-//
-////    @Override
-////    public void deleteBlinksByBookId(UUID bookId) {
-////        blinkRepository.deleteAllBlinksByBookId(bookId);
-////    }
-//
-//    @Test
-//    public List<Book> getPopularBooks(int popularBooks) {
-//        return bookRepository.findPopularBooks(popularBooks);
-//    }
-//
-//    @Test
-//    public List<Book> getRecentlyAddedBooks(int recentBooks) {
-//        return bookRepository.findRecentlyAddedBooks(recentBooks);
-//    }
+    @Test
+    void getAllBlinksByBookId(){
+
+    }
+
+    @Test
+    void getBookByBookIdTest(){
+
+    }
+
+
+    @Test
+    void deleteAllBlinksByBookIdTest(){
+
+    }
+
+    @Test
+    void getPopularBooksTest(){
+        Category category = libraryService.addNewCategory(createTestData.createNewCategory("Science", "This is a science category"));
+        Language language = libraryService.addNewLanguage(createTestData.addNewLanguage("us-en", "us English", true));
+
+
+        var book = createTestData.createNewBook(category, language, "Space book", true, "Elon Musk", 100, 10);
+        var addedBook = bookService.saveBook(book);
+
+        category = libraryService.addNewCategory(createTestData.createNewCategory("space", "This is a space category"));
+
+        book = createTestData.createNewBook(category, language, "science book", true, "Einstein", 200, 10);
+        bookService.saveBook(book);
+
+        List<Book> bookList = bookService.getPopularBooks(199);
+
+        Assertions.assertEquals(1, bookList.size());
+    }
+
+    @Test
+    void getRecentlyAddedBooksTest(){
+        Category category = libraryService.addNewCategory(createTestData.createNewCategory("Science", "This is a science category"));
+        Language language = libraryService.addNewLanguage(createTestData.addNewLanguage("us-en", "us English", true));
+
+
+        var book = createTestData.createNewBook(category, language, "Space book", true, "Elon Musk", 100, 10);
+        var addedBook = bookService.saveBook(book);
+
+        category = libraryService.addNewCategory(createTestData.createNewCategory("space", "This is a space category"));
+
+        book = createTestData.createNewBook(category, language, "science book", true, "Einstein", 200, 10);
+        bookService.saveBook(book);
+
+        List<Book> bookList = bookService.getRecentlyAddedBooks(10);
+
+        Assertions.assertEquals(2, bookList.size(), 8);
+    }
+
+    @Test
+    void deleteBlinkbyBlinkIdTest(){
+
+    }
 }

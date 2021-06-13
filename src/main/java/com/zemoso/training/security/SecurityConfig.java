@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers( "/**").permitAll()
                 .anyRequest().authenticated();
 
-        http.csrf().disable();
+//        http.csrf().disable();
     }
 
     @Bean

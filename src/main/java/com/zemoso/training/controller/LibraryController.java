@@ -4,7 +4,6 @@ import com.zemoso.training.dto.CategoryDto;
 import com.zemoso.training.dto.LanguageDto;
 import com.zemoso.training.entity.Category;
 import com.zemoso.training.entity.Language;
-import com.zemoso.training.entity.UserLibrary;
 import com.zemoso.training.service.LibraryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +26,6 @@ public class LibraryController {
     public LibraryController(LibraryService libraryService, ModelMapper modelMapper) {
         this.libraryService = libraryService;
         this.modelMapper = modelMapper;
-    }
-
-    @PostMapping("/user-libraries")
-    public ResponseEntity<UserLibrary> addNewUserBook(@RequestBody UserLibrary userLibrary){
-        return new ResponseEntity<>(userLibrary, HttpStatus.OK);
     }
 
     @PostMapping("/categories")

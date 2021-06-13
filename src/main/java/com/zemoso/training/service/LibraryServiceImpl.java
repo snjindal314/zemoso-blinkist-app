@@ -9,6 +9,9 @@ import com.zemoso.training.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 public class LibraryServiceImpl implements LibraryService {
 
@@ -21,9 +24,6 @@ public class LibraryServiceImpl implements LibraryService {
         this.categoryRepository = categoryRepository;
         this.languageRepository = languageRepository;
         this.libraryRepository = libraryRepository;
-    }
-
-    public LibraryServiceImpl() {
     }
 
     @Override
@@ -39,5 +39,10 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public void addNewUserBook(UserLibrary userLibrary) {
         libraryRepository.save(userLibrary);
+    }
+
+    @Override
+    public List<UserLibrary> getAllUserBooks(UUID userId) {
+        return libraryRepository.findByUserLibraryIdUserUserId(userId);
     }
 }

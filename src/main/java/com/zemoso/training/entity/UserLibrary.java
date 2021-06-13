@@ -14,20 +14,9 @@ import java.util.Date;
 @Setter
 @Table(name = "user_library")
 public class UserLibrary {
-//    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-//    @Column(name = "user_id", updatable = false, nullable = false)
-//    private UUID userId;
 
     @EmbeddedId
     private UserLibraryId userLibraryId;
-
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "book_id")
-//    private Book book;
 
     @Column(name = "is_finished")
     private boolean isFinished;

@@ -89,4 +89,13 @@ public class UserController {
 
         return new ResponseEntity<>("New user book has been added to user library.", HttpStatus.OK);
     }
+
+    @GetMapping("/users/{user-id}/user-libraries")
+    public ResponseEntity<List<UserLibrary>> getAllUserBooks(@PathVariable(name = "user-id") UUID userId){
+
+        List<UserLibrary> userLibraryList = libraryService.getAllUserBooks(userId);
+
+        return new ResponseEntity<>(userLibraryList, HttpStatus.OK);
+    }
+
 }

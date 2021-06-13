@@ -7,7 +7,6 @@ import com.zemoso.training.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,32 +31,23 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public Book updateBook(Book book) {
-        var updatedBook = bookRepository.save(book);
-        return updatedBook;
+        return bookRepository.save(book);
     }
 
     @Override
     public List<Book> getBooksByCategory(UUID categoryId) {
-//        return bookRepository.findAllBooksByCategory(categoryId);
-        return null;
+        return bookRepository.findBookByCategoryCategoryId(categoryId);
     }
 
     @Override
-    public List<Blink> getBlinksByBookId(UUID bookId) {
-        return new ArrayList<>();
+    public List<Blink> addBlinkByBookId(UUID bookId, List<Blink> blinkList) {
+        return blinkRepository.saveAll(blinkList);
     }
 
     @Override
-    public UUID addBlinkByBookId(UUID bookId, Blink blink) {
-        Blink blink1 = blinkRepository.save(blink);
-        return blink1.getBlinkId();
+    public List<Blink> getAllBlinksByBookId(UUID bookId) {
+        return blinkRepository.findBlinksByBookBookId(bookId);
     }
-
-//    @Override
-//    public List<Blink> getAllBlinksByBookId(UUID bookId) {
-//        //TODO : find blinks by bookId
-//        return blinkRepository.findAllBlinksByBooksId(bookId);
-//    }
 
     @Override
     public Optional<Book> getBookByBookId(UUID bookId) {
@@ -69,10 +59,10 @@ public class BookServiceImpl implements BookService{
         bookRepository.deleteById(bookId);
     }
 
-//    @Override
-//    public void deleteBlinksByBookId(UUID bookId) {
-//        blinkRepository.deleteAllBlinksByBookId(bookId);
-//    }
+    @Override
+    public List<Blink> deleteAllBlinksByBookId(UUID bookId) {
+       return blinkRepository.deleteBlinksByBookBookId(bookId);
+    }
 
     @Override
     public List<Book> getPopularBooks(int popularBooks) {
@@ -82,5 +72,10 @@ public class BookServiceImpl implements BookService{
     @Override
     public List<Book> getRecentlyAddedBooks(int recentBooks) {
         return bookRepository.findRecentlyAddedBooks(recentBooks);
+    }
+
+    @Override
+    public void deleteBlinkbyBlinkId(UUID blinkId) {
+        blinkRepository.deleteById(blinkId);
     }
 }

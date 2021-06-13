@@ -1,4 +1,4 @@
-package com.zemoso.training.service;
+package com.zemoso.training.security;
 
 import com.zemoso.training.entity.User;
 import org.springframework.security.core.GrantedAuthority;

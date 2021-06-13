@@ -19,9 +19,10 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
     @Query(value = "select b from Book b where b.numberOfReads > :numberOfReads")
     List<Book> findPopularBooks(@Param("numberOfReads") int numberOfReads);
 
-    @Query(value = "select b from Book b where b.creationDate > current_date - :recentBooks order by b.creationDate desc")
+    @Query(value = "select b from Book b where b.creationDate >  current_date - (:recentBooks + 0) order by b.creationDate desc")
     List<Book> findRecentlyAddedBooks(@Param("recentBooks") int recentBooks);
 
-//    @Query(value = "select b from Book b where b.categoryId = :categoryId")
-//    List<Book> findAllBooksByCategory(@Param("categoryId") UUID categoryId);
+    List<Book> findBookByCategoryCategoryId(UUID categoryId);
+
+
 }

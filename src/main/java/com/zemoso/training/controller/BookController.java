@@ -14,10 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -46,7 +43,6 @@ public class BookController {
         book.setCategory(category);
         book.getCategory().setCategoryId(bookDto.getCategoryDto().getCategoryId());
         book.getLanguage().setLanguageId(bookDto.getLanguageDto().getLanguageId());
-//        book.getBlinkList().stream().forEach((blink) -> blink.setBook(bookDto.));
         UUID bookId = bookService.saveBook(book);
         return new ResponseEntity<>("New book has been added. Book Id: " +bookId, HttpStatus.OK);
     }
@@ -84,26 +80,45 @@ public class BookController {
     @GetMapping("/books/{book-id}")
     public ResponseEntity<BookDto> getBookByBookId(@PathVariable("book-id") UUID bookId){
         Optional<Book> book = bookService.getBookByBookId(bookId);
-        return new ResponseEntity<>(modelMapper.map(book.get(), BookDto.class), HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(book.orElseGet(book::orElseThrow), BookDto.class), HttpStatus.OK);
 
     }
 
     @PostMapping("/books/{book-id}/blinks")
-    public ResponseEntity<String> addBlinksByBooksId(@PathVariable(value = "book-id") UUID bookId, @RequestBody BlinkDto blinkDto){
-        var blink = modelMapper.map(blinkDto, Blink.class);
-//        blink.setBookId(bookId);
-        UUID blinkId = bookService.addBlinkByBookId(bookId, blink);
-        return new ResponseEntity<>("New blink has been added. Blink Id: " + blinkId, HttpStatus.OK);
+    public ResponseEntity<List<BlinkDto>> addBlinksByBooksId(@PathVariable(value = "book-id") UUID bookId, @RequestBody List<BlinkDto> blinkDtoList){
+        List<Blink> blinkList = new ArrayList<>();
+        List<Blink> finalBlinkList = blinkList;
+        blinkDtoList.forEach(blinkDto -> {
+            var blink = modelMapper.map(blinkDto, Blink.class);
+            var book = new Book();
+            book.setBookId(bookId);
+            blink.setBook(book);
+            finalBlinkList.add(blink);
+        });
+
+        blinkList = bookService.addBlinkByBookId(bookId, blinkList);
+
+        blinkList.forEach(blink -> {
+            var blinkDto = modelMapper.map(blink, BlinkDto.class);
+            blinkDtoList.add(blinkDto);
+        });
+        return new ResponseEntity<>(blinkDtoList, HttpStatus.OK);
     }
 
-//    @GetMapping("/books/{book-id}/blinks")
-//    public List<Blink> findAllBlinksByBookId(@PathVariable(value = "book-id") UUID bookId){
-//        return bookService.getAllBlinksByBookId(bookId);
-//    }
-//
-//    @DeleteMapping("/books/{book-id}/blinks")
-//    public ResponseEntity<String> deleteBlinksByBookId(@PathVariable(value = "book-id") UUID bookId){
-//        bookService.deleteBlinksByBookId(bookId);
-//        return new ResponseEntity<>("All blinks have been deleted.", HttpStatus.OK);
-//    }
+    @GetMapping("/books/{book-id}/blinks")
+    public List<Blink> findAllBlinksByBookId(@PathVariable(value = "book-id") UUID bookId){
+        return bookService.getAllBlinksByBookId(bookId);
+    }
+
+    @DeleteMapping("/books/{book-id}/blinks")
+    public ResponseEntity<List<Blink>> deleteBlinksByBookId(@PathVariable(value = "book-id") UUID bookId){
+        List<Blink> blinkList = bookService.deleteAllBlinksByBookId(bookId);
+        return new ResponseEntity<>(blinkList, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/blinks/{blink-id}")
+    public ResponseEntity<String> deleteBlinkByBlinkId(@PathVariable(value = "blink-id") UUID blinkId){
+        bookService.deleteBlinkbyBlinkId(blinkId);
+        return new ResponseEntity<>("Blink has been deleted.", HttpStatus.OK);
+    }
 }

@@ -3,6 +3,7 @@ package com.zemoso.training.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -10,8 +11,8 @@ import java.util.UUID;
 public class UserLibraryDto {
     private UUID userId;
     private UUID bookId;
-//    private boolean isFinished;
-//    private int blinkNumber;
-//    private Date startDate;
-//    private Date finishDate;
+    private boolean isFinished;
+    private int blinkNumber;
+    private Date startDate;
+    private Date finishDate;
 }

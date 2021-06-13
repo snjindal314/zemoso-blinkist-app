@@ -15,19 +15,19 @@ import java.util.UUID;
 
      List<Book> getBooksByCategory(UUID categoryId);
 
-     List<Blink> getBlinksByBookId(UUID bookId);
+     List<Blink> addBlinkByBookId(UUID bookId, List<Blink> blinkList);
 
-     UUID addBlinkByBookId(UUID bookId, Blink blink);
-
-//     List<Blink> getAllBlinksByBookId(UUID bookId);
+     List<Blink> getAllBlinksByBookId(UUID bookId);
 
      Optional<Book> getBookByBookId(UUID bookId);
 
      void deleteBookByBookId(UUID bookId);
 
-//     void deleteBlinksByBookId(UUID bookId);
+     List<Blink> deleteAllBlinksByBookId(UUID bookId);
 
      List<Book> getPopularBooks(int popularBooks);
 
      List<Book> getRecentlyAddedBooks(int recentlyAddedBooks);
+
+     void deleteBlinkbyBlinkId(UUID blinkId);
  }

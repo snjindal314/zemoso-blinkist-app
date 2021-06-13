@@ -1,11 +1,14 @@
 package com.zemoso.training.controller;
 
-import com.zemoso.training.dto.BookDto;
 import com.zemoso.training.dto.UserDto;
+import com.zemoso.training.dto.UserLibraryDto;
 import com.zemoso.training.entity.Book;
 import com.zemoso.training.entity.User;
+import com.zemoso.training.entity.UserLibrary;
+import com.zemoso.training.entity.UserLibraryId;
 import com.zemoso.training.exception.ResourceNotFoundException;
 import com.zemoso.training.exception.ValidationException;
+import com.zemoso.training.service.LibraryService;
 import com.zemoso.training.service.UserService;
 import com.zemoso.training.service.UserServiceImpl;
 import org.modelmapper.ModelMapper;
@@ -14,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,11 +28,13 @@ public class UserController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final LibraryService libraryService;
 
     @Autowired
-    public UserController(UserServiceImpl userServiceImpl, ModelMapper modelMapper){
+    public UserController(UserServiceImpl userServiceImpl, ModelMapper modelMapper, LibraryService libraryService){
         this.userService = userServiceImpl;
         this.modelMapper = modelMapper;
+        this.libraryService = libraryService;
     }
 
     @PutMapping("/users")
@@ -60,9 +66,27 @@ public class UserController {
     }
 
     @PostMapping("/users/{user-id}/user-libraries")
-    public ResponseEntity<String> addNewBookToUserLibrary(@PathVariable UUID userId, @RequestBody BookDto bookDto){
-        var book = modelMapper.map(bookDto, Book.class);
+    public ResponseEntity<String> addNewBookToUserLibrary(@PathVariable(name = "user-id") UUID userId, @RequestBody UserLibraryDto userLibraryDto){
+        var userLibrary = new UserLibrary();
 
-        return null;
+        User user = new User();
+        Book book = new Book();
+
+        user.setUserId(userLibraryDto.getUserId());
+        book.setBookId(userLibraryDto.getBookId());
+
+        UserLibraryId userLibraryId = new UserLibraryId();
+        userLibraryId.setUser(user);
+        userLibraryId.setBook(book);
+
+        userLibrary.setUserLibraryId(userLibraryId);
+        userLibrary.setFinished(false);
+        userLibrary.setBlinkNumber(1);
+        userLibrary.setStartDate(new Date());
+        userLibrary.setFinishDate(null);
+
+        libraryService.addNewUserBook(userLibrary);
+
+        return new ResponseEntity<>("New user book has been added to user library.", HttpStatus.OK);
     }
 }

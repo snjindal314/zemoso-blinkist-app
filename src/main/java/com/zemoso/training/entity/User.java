@@ -28,7 +28,7 @@ public class User {
     @Column(name = "email", unique = true)
     private String email;
 
-//    @JsonIgnore
+//    @JsonIgnore(access = JsonProperty.Access.WRITE_ONLY)
     @NotBlank(message = "Password can not be empty.")
     private String password;
 
@@ -50,4 +50,5 @@ public class User {
     @JsonProperty
     @Column(name = "is_admin", nullable = false)
     private boolean isAdmin;
+
 }

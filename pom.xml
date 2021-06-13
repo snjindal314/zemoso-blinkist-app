@@ -61,7 +61,7 @@
 		<dependency>
 			<groupId>org.jacoco</groupId>
 			<artifactId>jacoco-maven-plugin</artifactId>
-			<version>0.8.7</version>
+			<version>0.8.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -80,31 +80,61 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.jacoco</groupId>-->
+<!--				<artifactId>jacoco-maven-plugin</artifactId>-->
+<!--				<version>0.8.7</version>-->
+<!--				<configuration>-->
+<!--					<skip>false</skip>-->
+<!--					<rules>-->
+<!--						<rule>-->
+<!--							<element>CLASS</element>-->
+<!--							<excludes>-->
+<!--								<exclude>*Test</exclude>-->
+<!--							</excludes>-->
+<!--							<limits>-->
+<!--								<limit>-->
+<!--									<counter>LINE</counter>-->
+<!--									<value>COVEREDRATIO</value>-->
+<!--									<minimum>0.00</minimum>-->
+<!--								</limit>-->
+<!--							</limits>-->
+<!--						</rule>-->
+<!--					</rules>-->
+<!--				</configuration>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>prepare-agent</id>-->
+<!--						<goals>-->
+<!--							<goal>prepare-agent</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--					<execution>-->
+<!--						<id>report</id>-->
+<!--						<phase>prepare-package</phase>-->
+<!--						<goals>-->
+<!--							<goal>report</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<outputDirectory>${project.build.directory}/jacoco</outputDirectory>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--					<execution>-->
+<!--						<id>check</id>-->
+<!--						<goals>-->
+<!--							<goal>check</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.7</version>
-				<configuration>
-					<skip>false</skip>
-					<rules>
-						<rule>
-							<element>CLASS</element>
-							<excludes>
-								<exclude>*Test</exclude>
-							</excludes>
-							<limits>
-								<limit>
-									<counter>LINE</counter>
-									<value>COVEREDRATIO</value>
-									<minimum>0.00</minimum>
-								</limit>
-							</limits>
-						</rule>
-					</rules>
-				</configuration>
+				<version>0.8.4</version>
 				<executions>
 					<execution>
-						<id>prepare-agent</id>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
@@ -115,17 +145,6 @@
 						<goals>
 							<goal>report</goal>
 						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/jacoco</outputDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>check</id>
-						<goals>
-							<goal>check</goal>
-						</goals>
-						<configuration>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>

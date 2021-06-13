@@ -69,10 +69,10 @@ public class BookController {
     }
 
     @PutMapping("/books")
-    public ResponseEntity<String> updateBook(@RequestBody BookDto bookDto){
+    public ResponseEntity<BookDto> updateBook(@RequestBody BookDto bookDto){
         var book = modelMapper.map(bookDto, Book.class);
-        UUID bookId = bookService.updateBook(book);
-        return new ResponseEntity<>("Book has been updated. Book Id: " +bookId, HttpStatus.OK);
+        var updateBook = bookService.updateBook(book);
+        return new ResponseEntity<>(modelMapper.map(updateBook, BookDto.class), HttpStatus.OK);
     }
 
     @DeleteMapping("/books/{book-id}")

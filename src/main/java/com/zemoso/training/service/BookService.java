@@ -11,7 +11,7 @@ import java.util.UUID;
  public interface BookService {
      UUID saveBook(Book book);
 
-     UUID updateBook(Book book);
+     Book updateBook(Book book);
 
      List<Book> getBooksByCategory(UUID categoryId);
 

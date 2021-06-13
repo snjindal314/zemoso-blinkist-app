@@ -31,9 +31,9 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public UUID updateBook(Book book) {
+    public Book updateBook(Book book) {
         var updatedBook = bookRepository.save(book);
-        return updatedBook.getBookId();
+        return updatedBook;
     }
 
     @Override

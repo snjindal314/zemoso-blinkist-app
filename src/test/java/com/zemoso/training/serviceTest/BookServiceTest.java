@@ -84,27 +84,6 @@ class BookServiceTest {
     }
 
     @Test
-    void addBlinkByBookIdTest(){
-        Assertions.assertEquals(1, 1);
-    }
-
-    @Test
-    void getAllBlinksByBookId(){
-        Assertions.assertEquals(1, 1);
-    }
-
-    @Test
-    void getBookByBookIdTest(){
-        Assertions.assertEquals(1, 1);
-    }
-
-
-    @Test
-    void deleteAllBlinksByBookIdTest(){
-        Assertions.assertEquals(1, 1);
-    }
-
-    @Test
     void getPopularBooksTest(){
         Category category = libraryService.addNewCategory(createTestData.createNewCategory("Science", "This is a science category"));
         Language language = libraryService.addNewLanguage(createTestData.addNewLanguage("us-en", "us English", true));
@@ -142,8 +121,30 @@ class BookServiceTest {
         Assertions.assertEquals(2, bookList.size(), 8);
     }
 
-    @Test
-    void deleteBlinkbyBlinkIdTest(){
-        Assertions.assertEquals(1, 1);
-    }
+//    @Test
+//    void deleteBlinkbyBlinkIdTest(){
+//        Assertions.assertEquals(1, 1);
+//    }
+//
+//    @Test
+//    void addBlinkByBookIdTest(){
+//        Assertions.assertEquals(1, 1);
+//    }
+//
+//    @Test
+//    void getAllBlinksByBookId(){
+//        Assertions.assertEquals(1, 1);
+//    }
+//
+//    @Test
+//    void getBookByBookIdTest(){
+//        Assertions.assertEquals(1, 1);
+//    }
+//
+//
+//    @Test
+//    void deleteAllBlinksByBookIdTest(){
+//        Assertions.assertEquals(1, 1);
+//    }
+
 }
